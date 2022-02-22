@@ -1,3 +1,6 @@
+const  carPic = document.createElement('img');
+let carPicLoaded = false;
+
 const trackWidth = 40;
 const trackHeight = 40;
 const trackGap = 2;
@@ -33,6 +36,11 @@ window.onload = function() {
 
 	const framesPerSecond = 30;
 	setInterval(updateAll, 1000/framesPerSecond);
+
+	carPic.onload = function() {
+		carPicLoaded = true;
+	}
+	carPic.src = './public/img/car.png';
 
   carReset();
 
@@ -81,7 +89,13 @@ function drawTracks() {
 
 function drawAll() {
 	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
-	colorCircle(carX,carY, 10, 'white'); // draw track as a circle
+
+	if(carPicLoaded) {
+		canvasContext.drawImage(carPic,
+			carX - carPic.width / 2,
+			carY - carPic.height / 2);
+	}
+
 	drawTracks();
 }
 
