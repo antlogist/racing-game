@@ -5,8 +5,8 @@ const trackGap = 2;
 const trackCols = 20;
 const trackRows = 15;
 
-var trackX = 0;
-var trackY = 0;
+let carX = 0;
+let carY = 0;
 
 const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -54,8 +54,8 @@ function carReset() {
 
 			if(trackGrid[arrayIndex] == 2) {
 				trackGrid[arrayIndex] = 0; //become a plain road
-				trackX = eachCol * trackWidth + trackWidth/2;
-				trackY = eachRow * trackHeight + trackHeight/2;
+				carX = eachCol * trackWidth + trackWidth/2;
+				carY = eachRow * trackHeight + trackHeight/2;
 			} // end of is this track here
 		} // end of for each track
 	} // end of for each row
@@ -81,7 +81,7 @@ function drawTracks() {
 
 function drawAll() {
 	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
-	colorCircle(trackX,trackY, 10, 'white'); // draw track as a circle
+	colorCircle(carX,carY, 10, 'white'); // draw track as a circle
 	drawTracks();
 }
 
