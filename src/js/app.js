@@ -10,6 +10,8 @@ const trackRows = 15;
 
 let carX = 0;
 let carY = 0;
+let carAng = 0;
+let carSpeed = 2;
 
 const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -47,7 +49,12 @@ window.onload = function() {
 }
 
 function updateAll() {
+	moveAll();
 	drawAll();
+}
+
+function moveAll() {
+ carMove();
 }
 
 function rowColToArrayIndex(col, row) {
@@ -69,6 +76,12 @@ function carReset() {
 	} // end of for each row
 }
 
+function carMove() {
+	carX += Math.cos(carAng) * carSpeed;
+	carY += Math.sin(carAng) * carSpeed;
+
+	carAng += 0.1;
+}
 
 function drawTracks() {
 
@@ -91,12 +104,22 @@ function drawAll() {
 	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
 
 	if(carPicLoaded) {
-		canvasContext.drawImage(carPic,
-			carX - carPic.width / 2,
-			carY - carPic.height / 2);
+		drawBitmapCenteredWithRotation(carPic,
+			carX,
+			carY, carAng);
 	}
 
 	drawTracks();
+}
+
+function drawBitmapCenteredWithRotation(useBitmap,atX,atY, withAng) {
+		canvasContext.save();
+		canvasContext.translate(atX, atY);
+		canvasContext.rotate(withAng);
+		canvasContext.drawImage(useBitmap,
+			-useBitmap.width / 2,
+			-useBitmap.height / 2);
+		canvasContext.restore();
 }
 
 function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
