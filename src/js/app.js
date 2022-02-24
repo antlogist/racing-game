@@ -11,7 +11,7 @@ const trackRows = 15;
 let carX = 0;
 let carY = 0;
 let carAng = 0;
-let carSpeed = 2;
+let carSpeed = 0;
 
 const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -32,12 +32,46 @@ const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 let canvas;
 let canvasContext;
 
+const keyLeftArrow = 37;
+const keyUpArrow = 38;
+const keyRightArrow = 39;
+const keyDownArrow = 40;
+
+function keyPressed(evt) {
+
+	evt.preventDefault();
+
+	if(keyLeftArrow == evt.keyCode) {
+		carAng -= 0.5;
+	}
+
+	if(keyRightArrow == evt.keyCode) {
+		carAng += 0.5;
+	}
+
+	if (keyUpArrow == evt.keyCode) {
+		carSpeed += 0.5;
+	}
+
+	if (keyDownArrow == evt.keyCode) {
+		carSpeed -= 0.5;
+	}
+
+}
+
+function keyReleased(evt) {
+	console.log('key released' + evt.keyCode);
+}
+
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
 
-	const framesPerSecond = 30;
+	const framesPerSecond = 15;
 	setInterval(updateAll, 1000/framesPerSecond);
+
+	document.addEventListener('keydown', keyPressed);
+	document.addEventListener('keyup', keyReleased);
 
 	carPic.onload = function() {
 		carPicLoaded = true;
@@ -79,8 +113,6 @@ function carReset() {
 function carMove() {
 	carX += Math.cos(carAng) * carSpeed;
 	carY += Math.sin(carAng) * carSpeed;
-
-	carAng += 0.1;
 }
 
 function drawTracks() {
