@@ -107,8 +107,34 @@ function updateAll() {
 	drawAll();
 }
 
+function isTrackAtColRow(col, row) {
+	if(col >= 0 && col < trackCols &&
+		row >= 0 && row < trackRows) {
+		 const trackIndexUnderCoord = rowColToArrayIndex(col, row);
+		 return (trackGrid[trackIndexUnderCoord] == 1);
+	} else {
+		return false;
+	}
+}
+
+function carTrackHandling() {
+	const carTrackCol = Math.floor(carX / trackWidth);
+	const carTrackRow = Math.floor(carY / trackHeight);
+
+	if(carTrackCol >= 0 && carTrackCol < trackCols &&
+		carTrackRow >= 0 && carTrackRow < trackRows) {
+			if(isTrackAtColRow( carTrackCol,carTrackRow )) {
+				carX -= Math.cos(carAng) * carSpeed;
+				carY -= Math.sin(carAng) * carSpeed;
+
+				carSpeed *= -0.2;
+			}
+		}
+}
+
 function moveAll() {
  carMove();
+ carTrackHandling();
 }
 
 function rowColToArrayIndex(col, row) {
