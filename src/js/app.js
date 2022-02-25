@@ -158,11 +158,13 @@ function carReset() {
 
 function carMove() {
 
+	carSpeed *= 0.97;
+
 	if(keyHeldGas) {
-		carSpeed += 0.2;
+		carSpeed += 0.3;
 	}
 	if(keyHeldReverse) {
-		carSpeed -= 0.2;
+		carSpeed -= 0.3;
 	}
 
 	if(keyHeldTrurnLeft) {
