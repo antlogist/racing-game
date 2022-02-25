@@ -13,6 +13,11 @@ let carY = 0;
 let carAng = 0;
 let carSpeed = 0;
 
+const speedDecay = 0.94;
+const drivePower = 0.5;
+const reversePower = 0.2;
+const turnRate = 0.03;
+
 const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
                    1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -149,7 +154,7 @@ function carReset() {
 
 			if(trackGrid[arrayIndex] == 2) {
 				trackGrid[arrayIndex] = 0; //become a plain road
-				carAng = Math.PI/2;
+				carAng = -Math.PI/2;
 				carX = eachCol * trackWidth + trackWidth/2;
 				carY = eachRow * trackHeight + trackHeight/2;
 			} // end of is this track here
@@ -159,20 +164,20 @@ function carReset() {
 
 function carMove() {
 
-	carSpeed *= 0.97;
+	carSpeed *= speedDecay;
 
 	if(keyHeldGas) {
-		carSpeed += 0.3;
+		carSpeed += drivePower;
 	}
 	if(keyHeldReverse) {
-		carSpeed -= 0.3;
+		carSpeed -= reversePower;
 	}
 
 	if(keyHeldTrurnLeft) {
-		carAng -= 0.04;
+		carAng -= turnRate;
 	}
 	if(keyHeldTrurnRight) {
-		carAng += 0.04;
+		carAng += turnRate;
 	}
 
 	carX += Math.cos(carAng) * carSpeed;
