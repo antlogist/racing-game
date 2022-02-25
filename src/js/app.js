@@ -149,6 +149,7 @@ function carReset() {
 
 			if(trackGrid[arrayIndex] == 2) {
 				trackGrid[arrayIndex] = 0; //become a plain road
+				carAng = Math.PI/2;
 				carX = eachCol * trackWidth + trackWidth/2;
 				carY = eachRow * trackHeight + trackHeight/2;
 			} // end of is this track here
