@@ -37,30 +37,50 @@ const keyUpArrow = 38;
 const keyRightArrow = 39;
 const keyDownArrow = 40;
 
+let keyHeldGas = false;
+let keyHeldReverse = false;
+let keyHeldTrurnLeft = false;
+let keyHeldTrurnRight = false;
+
 function keyPressed(evt) {
 
 	evt.preventDefault();
 
 	if(keyLeftArrow == evt.keyCode) {
-		carAng -= 0.5;
+		keyHeldTrurnLeft = true;
 	}
 
 	if(keyRightArrow == evt.keyCode) {
-		carAng += 0.5;
+		keyHeldTrurnRight = true;
 	}
 
 	if (keyUpArrow == evt.keyCode) {
-		carSpeed += 0.5;
+		keyHeldGas = true;
 	}
 
 	if (keyDownArrow == evt.keyCode) {
-		carSpeed -= 0.5;
+		keyHeldReverse = true;
 	}
 
 }
 
 function keyReleased(evt) {
-	console.log('key released' + evt.keyCode);
+	if(keyLeftArrow == evt.keyCode) {
+		keyHeldTrurnLeft = false;
+	}
+
+	if(keyRightArrow == evt.keyCode) {
+		keyHeldTrurnRight = false;
+	}
+
+	if (keyUpArrow == evt.keyCode) {
+		keyHeldGas = false;
+	}
+
+	if (keyDownArrow == evt.keyCode) {
+		keyHeldReverse = false;
+	}
+
 }
 
 window.onload = function() {
@@ -111,6 +131,21 @@ function carReset() {
 }
 
 function carMove() {
+
+	if(keyHeldGas) {
+		carSpeed += 0.2;
+	}
+	if(keyHeldReverse) {
+		carSpeed -= 0.2;
+	}
+
+	if(keyHeldTrurnLeft) {
+		carAng -= 0.04;
+	}
+	if(keyHeldTrurnRight) {
+		carAng += 0.04;
+	}
+
 	carX += Math.cos(carAng) * carSpeed;
 	carY += Math.sin(carAng) * carSpeed;
 }
