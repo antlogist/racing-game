@@ -1,3 +1,5 @@
+import * as graphics from './graphics';
+
 const  carPic = document.createElement('img');
 let carPicLoaded = false;
 
@@ -196,7 +198,7 @@ function drawTracks() {
 			const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
 			if(trackGrid[arrayIndex] === trackWall) {
-				colorRect(trackWidth * eachCol,trackHeight * eachRow,
+				graphics.colorRect(canvasContext, trackWidth * eachCol,trackHeight * eachRow,
 					trackWidth - trackGap, trackHeight - trackGap, 'coral');
 			} // end of is this track here
 		} // end of for each track
@@ -206,35 +208,13 @@ function drawTracks() {
 
 
 function drawAll() {
-	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
+	graphics.colorRect(canvasContext, 0,0, canvas.width,canvas.height, 'black'); // clear screen
 
 	if(carPicLoaded) {
-		drawBitmapCenteredWithRotation(carPic,
+		graphics.drawBitmapCenteredWithRotation(canvasContext, carPic,
 			carX,
 			carY, carAng);
 	}
 
 	drawTracks();
-}
-
-function drawBitmapCenteredWithRotation(useBitmap,atX,atY, withAng) {
-		canvasContext.save();
-		canvasContext.translate(atX, atY);
-		canvasContext.rotate(withAng);
-		canvasContext.drawImage(useBitmap,
-			-useBitmap.width / 2,
-			-useBitmap.height / 2);
-		canvasContext.restore();
-}
-
-function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
-	canvasContext.fillStyle = fillColor;
-	canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
-}
-
-function colorCircle(centerX,centerY, radius, fillColor) {
-	canvasContext.fillStyle = fillColor;
-	canvasContext.beginPath();
-	canvasContext.arc(centerX,centerY, 10, 0,Math.PI*2, true);
-	canvasContext.fill();
 }
