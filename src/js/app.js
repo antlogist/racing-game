@@ -34,6 +34,10 @@ const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                    1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
+const trackRoad = 0;
+const trackWall = 1;
+const trackPlayerStart = 2;
+
 let canvas;
 let canvasContext;
 
@@ -112,11 +116,11 @@ function updateAll() {
 	drawAll();
 }
 
-function isTrackAtColRow(col, row) {
+function isWallAtColRow(col, row) {
 	if(col >= 0 && col < trackCols &&
 		row >= 0 && row < trackRows) {
 		 const trackIndexUnderCoord = rowColToArrayIndex(col, row);
-		 return (trackGrid[trackIndexUnderCoord] == 1);
+		 return (trackGrid[trackIndexUnderCoord] == trackWall);
 	} else {
 		return false;
 	}
@@ -128,7 +132,7 @@ function carTrackHandling() {
 
 	if(carTrackCol >= 0 && carTrackCol < trackCols &&
 		carTrackRow >= 0 && carTrackRow < trackRows) {
-			if(isTrackAtColRow( carTrackCol,carTrackRow )) {
+			if(isWallAtColRow( carTrackCol,carTrackRow )) {
 				carX -= Math.cos(carAng) * carSpeed;
 				carY -= Math.sin(carAng) * carSpeed;
 
@@ -152,8 +156,8 @@ function carReset() {
 
 			const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
-			if(trackGrid[arrayIndex] == 2) {
-				trackGrid[arrayIndex] = 0; //become a plain road
+			if(trackGrid[arrayIndex] == trackPlayerStart) {
+				trackGrid[arrayIndex] = trackRoad; //become a plain road
 				carAng = -Math.PI/2;
 				carX = eachCol * trackWidth + trackWidth/2;
 				carY = eachRow * trackHeight + trackHeight/2;
@@ -191,7 +195,7 @@ function drawTracks() {
 
 			const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
-			if(trackGrid[arrayIndex] === 1) {
+			if(trackGrid[arrayIndex] === trackWall) {
 				colorRect(trackWidth * eachCol,trackHeight * eachRow,
 					trackWidth - trackGap, trackHeight - trackGap, 'coral');
 			} // end of is this track here
