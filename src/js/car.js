@@ -60,7 +60,7 @@ function carMove() {
 
 function carDraw() {
   if(carPicLoaded) {
-		drawBitmapCenteredWithRotation(canvasContext, carPic,
+		drawBitmapCenteredWithRotation(carPic,
 			carX,carY,
       carAng);
 	}
