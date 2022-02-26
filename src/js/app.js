@@ -1,98 +1,5 @@
-import * as graphics from './graphics';
-
-const  carPic = document.createElement('img');
-let carPicLoaded = false;
-
-const trackWidth = 40;
-const trackHeight = 40;
-const trackGap = 2;
-
-const trackCols = 20;
-const trackRows = 15;
-
-let carX = 0;
-let carY = 0;
-let carAng = 0;
-let carSpeed = 0;
-
-const speedDecay = 0.94;
-const drivePower = 0.5;
-const reversePower = 0.2;
-const turnRate = 0.03;
-
-const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                   1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-                   1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-                   1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
-                   1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
-                   1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1,
-                   1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-                   1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                   1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                   1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                   1, 2, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                   1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-                   1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
-                   1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-
-const trackRoad = 0;
-const trackWall = 1;
-const trackPlayerStart = 2;
-
 let canvas;
 let canvasContext;
-
-const keyLeftArrow = 37;
-const keyUpArrow = 38;
-const keyRightArrow = 39;
-const keyDownArrow = 40;
-
-let keyHeldGas = false;
-let keyHeldReverse = false;
-let keyHeldTrurnLeft = false;
-let keyHeldTrurnRight = false;
-
-function keyPressed(evt) {
-
-	evt.preventDefault();
-
-	if(keyLeftArrow == evt.keyCode) {
-		keyHeldTrurnLeft = true;
-	}
-
-	if(keyRightArrow == evt.keyCode) {
-		keyHeldTrurnRight = true;
-	}
-
-	if (keyUpArrow == evt.keyCode) {
-		keyHeldGas = true;
-	}
-
-	if (keyDownArrow == evt.keyCode) {
-		keyHeldReverse = true;
-	}
-
-}
-
-function keyReleased(evt) {
-	if(keyLeftArrow == evt.keyCode) {
-		keyHeldTrurnLeft = false;
-	}
-
-	if(keyRightArrow == evt.keyCode) {
-		keyHeldTrurnRight = false;
-	}
-
-	if (keyUpArrow == evt.keyCode) {
-		keyHeldGas = false;
-	}
-
-	if (keyDownArrow == evt.keyCode) {
-		keyHeldReverse = false;
-	}
-
-}
 
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -101,13 +8,9 @@ window.onload = function() {
 	const framesPerSecond = 15;
 	setInterval(updateAll, 1000/framesPerSecond);
 
-	document.addEventListener('keydown', keyPressed);
-	document.addEventListener('keyup', keyReleased);
+	setupInput();
 
-	carPic.onload = function() {
-		carPicLoaded = true;
-	}
-	carPic.src = './public/img/car.png';
+	carImageLoad();
 
   carReset();
 
@@ -116,31 +19,6 @@ window.onload = function() {
 function updateAll() {
 	moveAll();
 	drawAll();
-}
-
-function isWallAtColRow(col, row) {
-	if(col >= 0 && col < trackCols &&
-		row >= 0 && row < trackRows) {
-		 const trackIndexUnderCoord = rowColToArrayIndex(col, row);
-		 return (trackGrid[trackIndexUnderCoord] == trackWall);
-	} else {
-		return false;
-	}
-}
-
-function carTrackHandling() {
-	const carTrackCol = Math.floor(carX / trackWidth);
-	const carTrackRow = Math.floor(carY / trackHeight);
-
-	if(carTrackCol >= 0 && carTrackCol < trackCols &&
-		carTrackRow >= 0 && carTrackRow < trackRows) {
-			if(isWallAtColRow( carTrackCol,carTrackRow )) {
-				carX -= Math.cos(carAng) * carSpeed;
-				carY -= Math.sin(carAng) * carSpeed;
-
-				carSpeed *= -0.2;
-			}
-		}
 }
 
 function moveAll() {
@@ -152,69 +30,12 @@ function rowColToArrayIndex(col, row) {
 	return col + trackCols * row;
 }
 
-function carReset() {
-	for(let eachRow = 0; eachRow < trackRows; eachRow++) {
-		for(let eachCol=0; eachCol < trackCols; eachCol++) {
-
-			const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-
-			if(trackGrid[arrayIndex] == trackPlayerStart) {
-				trackGrid[arrayIndex] = trackRoad; //become a plain road
-				carAng = -Math.PI/2;
-				carX = eachCol * trackWidth + trackWidth/2;
-				carY = eachRow * trackHeight + trackHeight/2;
-			} // end of is this track here
-		} // end of for each track
-	} // end of for each row
+function clearScreen() {
+	colorRect(canvasContext, 0,0, canvas.width,canvas.height, 'black'); // clear screen
 }
-
-function carMove() {
-
-	carSpeed *= speedDecay;
-
-	if(keyHeldGas) {
-		carSpeed += drivePower;
-	}
-	if(keyHeldReverse) {
-		carSpeed -= reversePower;
-	}
-
-	if(keyHeldTrurnLeft) {
-		carAng -= turnRate;
-	}
-	if(keyHeldTrurnRight) {
-		carAng += turnRate;
-	}
-
-	carX += Math.cos(carAng) * carSpeed;
-	carY += Math.sin(carAng) * carSpeed;
-}
-
-function drawTracks() {
-
-	for(let eachRow = 0; eachRow < trackRows; eachRow++) {
-		for(let eachCol=0; eachCol < trackCols; eachCol++) {
-
-			const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-
-			if(trackGrid[arrayIndex] === trackWall) {
-				graphics.colorRect(canvasContext, trackWidth * eachCol,trackHeight * eachRow,
-					trackWidth - trackGap, trackHeight - trackGap, 'coral');
-			} // end of is this track here
-		} // end of for each track
-	} // end of for each row
-
-} // end of drawTracks func
-
 
 function drawAll() {
-	graphics.colorRect(canvasContext, 0,0, canvas.width,canvas.height, 'black'); // clear screen
-
-	if(carPicLoaded) {
-		graphics.drawBitmapCenteredWithRotation(canvasContext, carPic,
-			carX,
-			carY, carAng);
-	}
-
+	clearScreen();
+	carDraw();
 	drawTracks();
 }

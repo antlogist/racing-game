@@ -1,5 +1,5 @@
 
-export function drawBitmapCenteredWithRotation(canvasContext, useBitmap,atX,atY, withAng) {
+function drawBitmapCenteredWithRotation(canvasContext, useBitmap,atX,atY, withAng) {
   canvasContext.save();
   canvasContext.translate(atX, atY);
   canvasContext.rotate(withAng);
@@ -9,12 +9,12 @@ export function drawBitmapCenteredWithRotation(canvasContext, useBitmap,atX,atY,
   canvasContext.restore();
 }
 
-export function colorRect(canvasContext, topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
+function colorRect(canvasContext, topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
-export function colorCircle(canvasContext, centerX,centerY, radius, fillColor) {
+function colorCircle(canvasContext, centerX,centerY, radius, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.beginPath();
   canvasContext.arc(centerX,centerY, 10, 0,Math.PI*2, true);
