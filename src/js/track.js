@@ -1,3 +1,6 @@
+const  roadPic = document.createElement('img');
+const  wallPic = document.createElement('img');
+
 const trackWidth = 40;
 const trackHeight = 40;
 const trackGap = 2;
@@ -25,6 +28,11 @@ const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 const trackRoad = 0;
 const trackWall = 1;
 const trackPlayerStart = 2;
+
+function trackLoadImages() {
+  roadPic.src = './public/img/track_road.png';
+  wallPic.src = './public/img/track_wall.png';
+}
 
 function isWallAtColRow(col, row) {
 	if(col >= 0 && col < trackCols &&
@@ -59,9 +67,13 @@ function drawTracks() {
 			const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
 			if(trackGrid[arrayIndex] === trackWall) {
-				colorRect(canvasContext, trackWidth * eachCol,trackHeight * eachRow,
-					trackWidth - trackGap, trackHeight - trackGap, 'coral');
-			} // end of is this track here
+        canvasContext.drawImage(wallPic,
+          trackWidth * eachCol, trackHeight * eachRow);
+			} else if(trackGrid[arrayIndex] === trackRoad) {
+        canvasContext.drawImage(roadPic,
+          trackWidth * eachCol, trackHeight * eachRow);
+			}
+       // end of is this track here
 		} // end of for each track
 	} // end of for each row
 

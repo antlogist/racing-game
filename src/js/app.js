@@ -10,6 +10,7 @@ window.onload = function() {
 
 	setupInput();
 
+	trackLoadImages();
 	carImageLoad();
 
   carReset();
@@ -31,11 +32,11 @@ function rowColToArrayIndex(col, row) {
 }
 
 function clearScreen() {
-	colorRect(canvasContext, 0,0, canvas.width,canvas.height, 'black'); // clear screen
+	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
 }
 
 function drawAll() {
 	clearScreen();
-	carDraw();
 	drawTracks();
+	carDraw();
 }
