@@ -57,18 +57,26 @@ function carTrackHandling() {
 
 function drawTracks() {
 
+	let arrayIndex = 0;
+	let drawTileX = 0;
+	let drawTileY = 0;
 	for(let eachRow = 0; eachRow < trackRows; eachRow++) {
 		for(let eachCol=0; eachCol < trackCols; eachCol++) {
 
-			const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
+			// const arrayIndex = rowColToArrayIndex(eachCol, eachRow);
 
 			const tileKind = trackGrid[arrayIndex];
 
 			const useImg = trackPics[tileKind];
 
 			canvasContext.drawImage(useImg,
-				trackWidth * eachCol, trackHeight * eachRow);
-		} // end of for each track
+				drawTileX, drawTileY);
+
+				drawTileX += trackWidth;
+				arrayIndex++;
+		} // end of for each col
+		drawTileY += trackHeight;
+		drawTileX = 0;
 	} // end of for each row
 
 } // end of drawTracks func
