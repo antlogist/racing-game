@@ -2,7 +2,7 @@ const  carPic = document.createElement('img');
 const  roadPic = document.createElement('img');
 const  wallPic = document.createElement('img');
 
-let picsToLoad = 3;
+let picsToLoad = 0; //set automatically based on imageList in loadImages()
 
 function countLoadedmagesAndLaunchIfReady() {
   picsToLoad--;
@@ -17,7 +17,15 @@ function beginLoadingImage(imgVar, fileName) {
 }
 
 function loadImages() {
-  beginLoadingImage(carPic, './public/img/car.png');
-  beginLoadingImage(roadPic, './public/img/track_road.png');
-  beginLoadingImage(wallPic, './public/img/track_wall.png');
+  const imageList = [
+    {name: carPic, file: './public/img/car.png'},
+    {name: roadPic, file: './public/img/track_road.png'},
+    {name: wallPic, file: './public/img/track_wall.png'},
+  ];
+
+  picsToLoad = imageList.length;
+
+  imageList.map((image) => {
+    beginLoadingImage(image.name, image.file);
+  });
 }
