@@ -6,7 +6,8 @@ let carSpeed = 0;
 const speedDecay = 0.94;
 const drivePower = 0.5;
 const reversePower = 0.2;
-const turnRate = 0.03;
+const turnRate = 0.06;
+const minSpeedToTurn = 0.5;
 
 function carReset() {
 	for(let eachRow = 0; eachRow < trackRows; eachRow++) {
@@ -35,12 +36,14 @@ function carMove() {
 		carSpeed -= reversePower;
 	}
 
-	if(keyHeldTrurnLeft) {
-		carAng -= turnRate;
-	}
+	if(Math.abs(carSpeed) > minSpeedToTurn) {
+		if(keyHeldTrurnLeft) {
+			carAng -= turnRate;
+		}
 
-	if(keyHeldTrurnRight) {
-		carAng += turnRate;
+		if(keyHeldTrurnRight) {
+			carAng += turnRate;
+		}
 	}
 
 	carX += Math.cos(carAng) * carSpeed;
