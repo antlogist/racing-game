@@ -1,13 +1,9 @@
-const  roadPic = document.createElement('img');
-const  wallPic = document.createElement('img');
-
 const trackWidth = 40;
 const trackHeight = 40;
 const trackGap = 2;
 
 const trackCols = 20;
 const trackRows = 15;
-
 
 const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                    1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -28,11 +24,6 @@ const trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 const trackRoad = 0;
 const trackWall = 1;
 const trackPlayerStart = 2;
-
-function trackLoadImages() {
-  roadPic.src = './public/img/track_road.png';
-  wallPic.src = './public/img/track_wall.png';
-}
 
 function isWallAtColRow(col, row) {
 	if(col >= 0 && col < trackCols &&

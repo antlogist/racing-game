@@ -9,10 +9,7 @@ window.onload = function() {
 	setInterval(updateAll, 1000/framesPerSecond);
 
 	setupInput();
-
-	trackLoadImages();
-	carImageLoad();
-
+	loadImages();
   carReset();
 
 }

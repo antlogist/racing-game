@@ -1,7 +1,3 @@
-
-const  carPic = document.createElement('img');
-let carPicLoaded = false;
-
 let carX = 0;
 let carY = 0;
 let carAng = 0;
@@ -11,13 +7,6 @@ const speedDecay = 0.94;
 const drivePower = 0.5;
 const reversePower = 0.2;
 const turnRate = 0.03;
-
-function carImageLoad() {
-  carPic.onload = function() {
-		carPicLoaded = true;
-	}
-	carPic.src = './public/img/car.png';
-}
 
 function carReset() {
 	for(let eachRow = 0; eachRow < trackRows; eachRow++) {
