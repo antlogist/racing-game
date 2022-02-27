@@ -64,27 +64,7 @@ function drawTracks() {
 
 			const tileKind = trackGrid[arrayIndex];
 
-			let useImg;
-
-			switch(tileKind) {
-				case trackWall:
-					useImg = wallPic;
-					break;
-				case trackRoad:
-					useImg = roadPic;
-					break;
-				case trackGoal:
-					useImg = goalPic;
-					break;
-				case trackTree:
-					useImg = treePic;
-					break;
-				case trackFlag:
-					useImg = flagPic;
-					break;
-				default:
-					useImg = wallPic;
-			}
+			const useImg = trackPics[tileKind];
 
 			canvasContext.drawImage(useImg,
 				trackWidth * eachCol, trackHeight * eachRow);
