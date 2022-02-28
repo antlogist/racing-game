@@ -10,6 +10,7 @@ const turnRate = 0.06;
 const minSpeedToTurn = 0.5;
 
 function carReset() {
+	carSpeed = 0;
 	for(let eachRow = 0; eachRow < trackRows; eachRow++) {
 		for(let eachCol=0; eachCol < trackCols; eachCol++) {
 

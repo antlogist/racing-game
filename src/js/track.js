@@ -32,13 +32,13 @@ const trackTree = 4;
 const trackFlag = 5;
 
 
-function isObstacleAtColRow(col, row) {
+function returnTileTypeAtColRow(col, row) {
 	if(col >= 0 && col < trackCols &&
 		row >= 0 && row < trackRows) {
 		 const trackIndexUnderCoord = rowColToArrayIndex(col, row);
-		 return (trackGrid[trackIndexUnderCoord] !== trackRoad);
+		 return trackGrid[trackIndexUnderCoord];
 	} else {
-		return false;
+		return trackWall;
 	}
 }
 
@@ -48,7 +48,12 @@ function carTrackHandling() {
 
 	if(carTrackCol >= 0 && carTrackCol < trackCols &&
 		carTrackRow >= 0 && carTrackRow < trackRows) {
-			if(isObstacleAtColRow( carTrackCol,carTrackRow )) {
+			const tileHere = returnTileTypeAtColRow( carTrackCol,carTrackRow )
+
+			if(tileHere === trackGoal) {
+				loadLevel(levelOne);
+				carReset();
+			} else if(tileHere !== trackRoad) {
 				carX -= Math.cos(carAng) * carSpeed;
 				carY -= Math.sin(carAng) * carSpeed;
 
