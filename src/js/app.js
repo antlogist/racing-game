@@ -17,8 +17,15 @@ function startGameAfterImageLoading() {
 	setInterval(updateAll, 1000/framesPerSecond);
 
 	setupInput();
+
+	loadLevel(levelOne);
+
   carReset();
 
+}
+
+function loadLevel(whichLevel) {
+	trackGrid = whichLevel.slice();
 }
 
 function updateAll() {
